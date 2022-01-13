@@ -5,8 +5,168 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Calculator_Extended"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Calculator" 
+        MinHeight="450" Height="650" MaxHeight="680" 
+        MaxWidth="400" Width="380" MinWidth="350"
+        Background="#1F1F1F"
+        >
+    <Window.Resources>
+        <Style x:Key="IconButtonStyle" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#fff"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" 
+                        BorderThickness="0 0 0 0"
+                        Padding="4,2" 
+                        BorderBrush="DarkGray" 
+                        CornerRadius="0" 
+                        
+                        Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#4D4E4E"/>
+                                <Setter Property="Foreground" Value="#fff"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TitleStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#fff"/>
+            <Setter  Property="FontSize" Value="20" />
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+        <Style x:Key="TopInputDisplay" TargetType="TextBlock">
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Margin" Value="0 5"/>
+            <Setter Property="TextAlignment" Value="Right"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Foreground" Value="#787878"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Padding" Value="0 1" />
+        </Style>
+        <Style x:Key="InputDisplay" TargetType="TextBlock">
+            <Setter Property="Height" Value="80"/>
+            <Setter Property="Margin" Value="0 5"/>
+            <Setter Property="TextAlignment" Value="Right"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Foreground" Value="#fff"/>
+            <Setter Property="FontSize" Value="43"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FlowDirection" Value="LeftToRight"/>
+            <Setter Property="Padding" Value="0 1" />
+        </Style>
+    </Window.Resources>
+    <Border BorderThickness="0" BorderBrush="#1F1F1F">
+        <StackPanel>
+            <Grid Margin="0 1 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="7*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Button Style="{StaticResource IconButtonStyle}" Grid.Column="0">
+                    <Image Width="20"  Source="/Images/menunew.png"/>
+                </Button>
+                <TextBlock Style="{StaticResource TitleStyle}" VerticalAlignment="Center" Grid.Column="1" Text="Standard"/>
+                <Button Style="{StaticResource IconButtonStyle}" Grid.Column="2">
+                    <Image Width="20"  Source="/Images/historynew.png"/>
+                </Button>
+            </Grid>
+            <TextBlock Style="{StaticResource TopInputDisplay}">00000000000000000000000000000</TextBlock>
+            <TextBlock Style="{StaticResource InputDisplay}">000000000000000</TextBlock>
+            <Grid Margin="5 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                
+                
+                <Button Grid.Row="0" Grid.Column="0" Content="MC"/>
+                <Button Grid.Row="0" Grid.Column="1" Content="MR"/>
+                <Button Grid.Row="0" Grid.Column="2" Content="M+"/>
+                <Button Grid.Row="0" Grid.Column="3" Content="M-"/>
+                <Button Grid.Row="0" Grid.Column="4" Content="MS"/>
+                <Button Grid.Row="0" Grid.Column="5" Content="M^"/>
+
+                
+                
+            </Grid>
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Button Grid.Row="0" Grid.Column="0" Content="MC"/>
+                <Button Grid.Row="0" Grid.Column="1" Content="MR"/>
+                <Button Grid.Row="0" Grid.Column="2" Content="M+"/>
+                <Button Grid.Row="0" Grid.Column="3" Content="M-"/>
+                <Button Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="5" Content="MS"/>
+
+
+                <Button Grid.Row="1" Grid.Column="0" Content="MC"/>
+                <Button Grid.Row="1" Grid.Column="1" Content="MR"/>
+                <Button Grid.Row="1" Grid.Column="2" Content="M+"/>
+                <Button Grid.Row="1" Grid.Column="3" Content="M-"/>
+                <Button Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="5" Content="MS"/>
+
+
+                <Button Grid.Row="2" Grid.Column="0" Content="MC"/>
+                <Button Grid.Row="2" Grid.Column="1" Content="MR"/>
+                <Button Grid.Row="2" Grid.Column="2" Content="M+"/>
+                <Button Grid.Row="2" Grid.Column="3" Content="M-"/>
+                <Button Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="5" Content="MS"/>
+
+
+                <Button Grid.Row="3" Grid.Column="0" Content="MC"/>
+                <Button Grid.Row="3" Grid.Column="1" Content="MR"/>
+                <Button Grid.Row="3" Grid.Column="2" Content="M+"/>
+                <Button Grid.Row="3" Grid.Column="3" Content="M-"/>
+                <Button Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="5" Content="MS"/>
+
+
+                <Button Grid.Row="4" Grid.Column="0" Content="MC"/>
+                <Button Grid.Row="4" Grid.Column="1" Content="MR"/>
+                <Button Grid.Row="4" Grid.Column="2" Content="M+"/>
+                <Button Grid.Row="4" Grid.Column="3" Content="M-"/>
+                <Button Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="5" Content="MS"/>
+
+
+                <Button Grid.Row="5" Grid.Column="0" Content="MC"/>
+                <Button Grid.Row="5" Grid.Column="1" Content="MR"/>
+                <Button Grid.Row="5" Grid.Column="2" Content="M+"/>
+                <Button Grid.Row="5" Grid.Column="3" Content="M-"/>
+                <Button Grid.Row="5" Grid.Column="4" Grid.ColumnSpan="5" Content="MS"/>
+            </Grid>
+        </StackPanel>
+    </Border>
+    
 </Window>
