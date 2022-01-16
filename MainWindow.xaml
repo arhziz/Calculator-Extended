@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Calculator_Extended"
         mc:Ignorable="d"
         Title="Calculator" 
-        MinHeight="450" Height="650" MaxHeight="680" 
+        MinHeight="650" Height="650" MaxHeight="650" 
         MaxWidth="400" Width="380" MinWidth="350"
         Background="#1F1F1F"
         >
@@ -22,6 +22,52 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#4D4E4E"/>
+                                <Setter Property="Foreground" Value="#fff"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="MemoryButtonsStyle" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#fff"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <ControlTemplate.Triggers>
+                            <!--Triggers Go in here-->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="#4D4C4D"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="NormalButtonsStyle" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Background" Value="#171716"/>
+            <Setter Property="Foreground" Value="#fff"/>
+            <Setter Property="Height" Value="65"/>
+            <Setter Property="Padding" Value="0 10"/>
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
                         <Border Name="border" 
                         BorderThickness="0 0 0 0"
                         Padding="4,2" 
@@ -31,10 +77,80 @@
                         Background="{TemplateBinding Background}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
+                        
                         <ControlTemplate.Triggers>
+                            <!--Triggers Go in here-->
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#4D4E4E"/>
-                                <Setter Property="Foreground" Value="#fff"/>
+                                <Setter Property="Background" Value="#1F1F1F"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="FunctionButtonsStyle" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Background" Value="#171716"/>
+            <Setter Property="Foreground" Value="#fff"/>
+            <Setter Property="Height" Value="65"/>
+            <Setter Property="Padding" Value="0 10"/>
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="FontSize" Value="35" />
+            <Setter Property="FontWeight" Value="Light" />
+            
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" 
+                        BorderThickness="0 0 0 0"
+                        Padding="4,2" 
+                        BorderBrush="DarkGray" 
+                        CornerRadius="0" 
+                        
+                        Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <!--Triggers Go in here-->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#3075BB" />
+                                <Setter Property="Foreground" Value="#000" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="NumberButtonsStyle" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Background" Value="#060707"/>
+            <Setter Property="Foreground" Value="#fff"/>
+            <Setter Property="Height" Value="65"/>
+            <Setter Property="Padding" Value="0 10"/>
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="FontSize" Value="30" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" 
+                        BorderThickness="0 0 0 0"
+                        Padding="4,2" 
+                        BorderBrush="DarkGray" 
+                        CornerRadius="0" 
+                        
+                        Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <!--Triggers Go in here-->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#1F1F1F"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -48,11 +164,12 @@
         </Style>
         <Style x:Key="TopInputDisplay" TargetType="TextBlock">
             <Setter Property="Height" Value="25"/>
-            <Setter Property="Margin" Value="0 5"/>
+            <Setter Property="Margin" Value="0 8"/>
             <Setter Property="TextAlignment" Value="Right"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="Foreground" Value="#787878"/>
             <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Padding" Value="2"/>
             <Setter Property="VerticalAlignment" Value="Bottom"/>
             <Setter Property="Padding" Value="0 1" />
         </Style>
@@ -63,14 +180,15 @@
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="Foreground" Value="#fff"/>
             <Setter Property="FontSize" Value="43"/>
+            
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FlowDirection" Value="LeftToRight"/>
             <Setter Property="Padding" Value="0 1" />
         </Style>
     </Window.Resources>
-    <Border BorderThickness="0" BorderBrush="#1F1F1F">
-        <StackPanel>
+    <Border Height="Auto" BorderThickness="0" BorderBrush="#1F1F1F">
+        <StackPanel Height="Auto">
             <Grid Margin="0 1 0 0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
@@ -85,9 +203,9 @@
                     <Image Width="20"  Source="/Images/historynew.png"/>
                 </Button>
             </Grid>
-            <TextBlock Style="{StaticResource TopInputDisplay}">00000000000000000000000000000</TextBlock>
-            <TextBlock Style="{StaticResource InputDisplay}">000000000000000</TextBlock>
-            <Grid Margin="5 0">
+            <TextBlock x:Name="topOutBlock" Style="{StaticResource TopInputDisplay}" Text=""></TextBlock>
+            <TextBlock x:Name="mainOutBlock" Style="{StaticResource InputDisplay}" Text=""></TextBlock>
+            <Grid Height="20" Margin="5 0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
@@ -98,73 +216,81 @@
                 </Grid.ColumnDefinitions>
                 
                 
-                <Button Grid.Row="0" Grid.Column="0" Content="MC"/>
-                <Button Grid.Row="0" Grid.Column="1" Content="MR"/>
-                <Button Grid.Row="0" Grid.Column="2" Content="M+"/>
-                <Button Grid.Row="0" Grid.Column="3" Content="M-"/>
-                <Button Grid.Row="0" Grid.Column="4" Content="MS"/>
-                <Button Grid.Row="0" Grid.Column="5" Content="M^"/>
+                <Button x:Name="MemoryClearBtn" Click="MemoryBtn_Click" Style="{StaticResource MemoryButtonsStyle}" IsEnabled="False" Grid.Column="0" Content="MC"/>
+                <Button x:Name="MemoryRestoreBtn" Click="MemoryBtn_Click" Style="{StaticResource MemoryButtonsStyle}" IsEnabled="False" Grid.Column="1" Content="MR"/>
+                <Button x:Name="MemoryPlusBtn" Click="MemoryBtn_Click" Style="{StaticResource MemoryButtonsStyle}" Grid.Column="2" Content="M+"/>
+                <Button x:Name="MemoryMinusBtn" Click="MemoryBtn_Click" Style="{StaticResource MemoryButtonsStyle}" Grid.Column="3" Content="M-"/>
+                <Button x:Name="MemoryStoreBtn" Click="MemoryBtn_Click" Style="{StaticResource MemoryButtonsStyle}" Grid.Column="4" Content="MS"/>
+                <Button x:Name="MemoryDisplayBtn" Click="MemoryBtn_Click" Style="{StaticResource MemoryButtonsStyle}" IsEnabled="False" Grid.Column="5" Content="M^"/>
 
                 
                 
             </Grid>
-            <Grid Margin="5">
+            <Grid  Margin="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
+                    
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
+                    <RowDefinition Height="65*" />
+                    <RowDefinition Height="65*"/>
+                    <RowDefinition Height="65*"/>
+                    <RowDefinition Height="65*"/>
+                    <RowDefinition Height="65*"/>
+                    <RowDefinition Height="65*"/>
+                    <RowDefinition Height="65*"/>
                 </Grid.RowDefinitions>
-                <Button Grid.Row="0" Grid.Column="0" Content="MC"/>
-                <Button Grid.Row="0" Grid.Column="1" Content="MR"/>
-                <Button Grid.Row="0" Grid.Column="2" Content="M+"/>
-                <Button Grid.Row="0" Grid.Column="3" Content="M-"/>
-                <Button Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="5" Content="MS"/>
+                <Button x:Name="ModulusBtn" Tag="%" Click="ModulusBtn_Click" Style="{StaticResource NormalButtonsStyle}" Grid.Row="0" Grid.Column="0">
+                    <Image Width="15" Source="Images/modulus.png"/>
+                </Button>
+                <Button x:Name="SqrRtBtn" Tag="√" Click="SqrRtBtn_Click" Style="{StaticResource NormalButtonsStyle}" Grid.Row="0" Grid.Column="1">
+                    <Image Width="15" Source="Images/sqrrt.png"/>
+                </Button>
+                <Button x:Name="SqrBtn" Click="SqrBtn_Click" Style="{StaticResource NormalButtonsStyle}" Grid.Row="0" Grid.Column="2">
+                    <Image Width="20" Source="Images/sqr.png"/>
+                </Button>
+                <Button x:Name="InverseBtn" Click="InverseBtn_Click" Style="{StaticResource NormalButtonsStyle}" Grid.Row="0" Grid.Column="3">
+                    <Image Width="20" Source="Images/inverse.png"/>
+                </Button>
+                
 
 
-                <Button Grid.Row="1" Grid.Column="0" Content="MC"/>
-                <Button Grid.Row="1" Grid.Column="1" Content="MR"/>
-                <Button Grid.Row="1" Grid.Column="2" Content="M+"/>
-                <Button Grid.Row="1" Grid.Column="3" Content="M-"/>
-                <Button Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="5" Content="MS"/>
+                <Button x:Name="CEBtn" Click="CEBtn_Click" Style="{StaticResource NormalButtonsStyle}" Grid.Row="1" Grid.Column="0" Content="CE"/>
+                <Button x:Name="CBtn" Click="CBtn_Click" Style="{StaticResource NormalButtonsStyle}" Grid.Row="1" Grid.Column="1" Content="C"/>
+                <Button x:Name="DelBtn" Click="DelBtn_Click" Style="{StaticResource NormalButtonsStyle}" Grid.Row="1" Grid.Column="2" Content="Del"/>
+
+                <Button x:Name="DivideBtn" Click="DivideBtn_Click"  Style="{StaticResource FunctionButtonsStyle}" Grid.Row="1" Grid.Column="3" Content="÷"/>
 
 
-                <Button Grid.Row="2" Grid.Column="0" Content="MC"/>
-                <Button Grid.Row="2" Grid.Column="1" Content="MR"/>
-                <Button Grid.Row="2" Grid.Column="2" Content="M+"/>
-                <Button Grid.Row="2" Grid.Column="3" Content="M-"/>
-                <Button Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="5" Content="MS"/>
+                <Button x:Name="SevenBtn" Tag="7" Click="NumberBtn_Click" Style="{StaticResource NumberButtonsStyle}" Grid.Row="2" Grid.Column="0" Content="7"/>
+                <Button x:Name="EightBtn" Tag="8" Click="NumberBtn_Click" Style="{StaticResource NumberButtonsStyle}" Grid.Row="2" Grid.Column="1" Content="8"/>
+                <Button x:Name="NineBtn" Tag="9" Click="NumberBtn_Click" Style="{StaticResource NumberButtonsStyle}" Grid.Row="2" Grid.Column="2" Content="9"/>
+
+                <Button x:Name="MultiplyBtn" Click="MultiplyBtn_Click" Style="{StaticResource FunctionButtonsStyle}" Grid.Row="2" Grid.Column="3" Content="×"/>
 
 
-                <Button Grid.Row="3" Grid.Column="0" Content="MC"/>
-                <Button Grid.Row="3" Grid.Column="1" Content="MR"/>
-                <Button Grid.Row="3" Grid.Column="2" Content="M+"/>
-                <Button Grid.Row="3" Grid.Column="3" Content="M-"/>
-                <Button Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="5" Content="MS"/>
+                <Button x:Name="FourBtn" Tag="4" Click="NumberBtn_Click" Style="{StaticResource NumberButtonsStyle}" Grid.Row="3" Grid.Column="0" Content="4"/>
+                <Button x:Name="FiveBtn" Tag="5" Click="NumberBtn_Click" Style="{StaticResource NumberButtonsStyle}" Grid.Row="3" Grid.Column="1" Content="5"/>
+                <Button x:Name="SixBtn" Tag="6" Click="NumberBtn_Click" Style="{StaticResource NumberButtonsStyle}" Grid.Row="3" Grid.Column="2" Content="6"/>
+
+                <Button x:Name="MinusBtn" Click="MinusBtn_Click" Style="{StaticResource FunctionButtonsStyle}" Grid.Row="3" Grid.Column="3" Content="−"/>
 
 
-                <Button Grid.Row="4" Grid.Column="0" Content="MC"/>
-                <Button Grid.Row="4" Grid.Column="1" Content="MR"/>
-                <Button Grid.Row="4" Grid.Column="2" Content="M+"/>
-                <Button Grid.Row="4" Grid.Column="3" Content="M-"/>
-                <Button Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="5" Content="MS"/>
+                <Button x:Name="OneBtn" Tag="1" Click="NumberBtn_Click" Style="{StaticResource NumberButtonsStyle}" Grid.Row="4" Grid.Column="0" Content="1"/>
+                <Button x:Name="TwoBtn" Tag="2" Click="NumberBtn_Click" Style="{StaticResource NumberButtonsStyle}" Grid.Row="4" Grid.Column="1" Content="2"/>
+                <Button x:Name="ThreeBtn" Tag="3" Click="NumberBtn_Click" Style="{StaticResource NumberButtonsStyle}" Grid.Row="4" Grid.Column="2" Content="3"/>
+
+                <Button x:Name="PlusBtn" Click="PlusBtn_Click" Style="{StaticResource FunctionButtonsStyle}" Grid.Row="4" Grid.Column="3" Content="+"/>
 
 
-                <Button Grid.Row="5" Grid.Column="0" Content="MC"/>
-                <Button Grid.Row="5" Grid.Column="1" Content="MR"/>
-                <Button Grid.Row="5" Grid.Column="2" Content="M+"/>
-                <Button Grid.Row="5" Grid.Column="3" Content="M-"/>
-                <Button Grid.Row="5" Grid.Column="4" Grid.ColumnSpan="5" Content="MS"/>
+                <Button x:Name="PlusMinusBtn" Tag="1" Click="PlusMinusBtn_Click" Style="{StaticResource NormalButtonsStyle}" Grid.Row="5" Grid.Column="0" Content="±"/>
+                <Button x:Name="ZeroBtn"  Tag="0" Click="NumberBtn_Click" Style="{StaticResource NumberButtonsStyle}" Grid.Row="5" Grid.Column="1" Content="0"/>
+                <Button x:Name="PeriodBtn" Tag="." Click="PeriodBtn_Click" Style="{StaticResource NormalButtonsStyle}" Grid.Row="5" Grid.Column="2" Content="."/>
+
+                <Button x:Name="EqualBtn" Click="EqualBtn_Click" Style="{StaticResource FunctionButtonsStyle}" Grid.Row="5" Grid.Column="3" Content="="/>
             </Grid>
         </StackPanel>
     </Border>
