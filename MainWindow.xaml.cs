@@ -20,9 +20,13 @@ namespace Calculator_Extended
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Fields
         public CalculatorStructure calculator;
         //gets the current size of the mainTextBlock
         private double currentFontSize { get; set; }
+        #endregion
+
+        #region Initializer
         public MainWindow()
         {
             InitializeComponent();
@@ -38,9 +42,10 @@ namespace Calculator_Extended
             currentFontSize = mainOutBlock.FontSize;
             //this.DataContext = new OutputViewModel().Data;
         }
-
+        #endregion
         #region Functions Buttons Click
         //Modulus Function Btn
+
         private void ModulusBtn_Click(object sender, RoutedEventArgs e)
         {
 
@@ -95,7 +100,11 @@ namespace Calculator_Extended
             calculator = new CalculatorStructure();
             OutputSetter();
         }
-
+        /// <summary>
+        /// Clears the current input 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DelBtn_Click(object sender, RoutedEventArgs e)
         {
             calculator.ClearInput();
@@ -106,6 +115,11 @@ namespace Calculator_Extended
 
 
         #region Digit Input Buttons
+        /// <summary>
+        /// detects if a number is pressed
+        /// </summary>
+        /// <param name="sender">button</param>
+        /// <param name="e">empty</param>
         private void NumberBtn_Click(object sender, RoutedEventArgs e)
         {
             //Get The button Tag 
@@ -137,31 +151,31 @@ namespace Calculator_Extended
 
 
         #region Arithmetic Btns
-
+        //Equals Button 
         private void EqualBtn_Click(object sender, RoutedEventArgs e)
         {
             calculator.EqualFunction();
             OutputSetter();
         }
-
+        //Addition Button
         private void PlusBtn_Click(object sender, RoutedEventArgs e)
         {
             calculator.AddFunction();
             OutputSetter();
         }
-
+        //Substract Button
         private void MinusBtn_Click(object sender, RoutedEventArgs e)
         {
             calculator.MinusFunction();
             OutputSetter();
         }
-
+        //Multiply Button
         private void MultiplyBtn_Click(object sender, RoutedEventArgs e)
         {
             calculator.MultiplyFunction();
             OutputSetter();
         }
-
+        //Divide Button
         private void DivideBtn_Click(object sender, RoutedEventArgs e)
         {
             calculator.DivideFunction();
@@ -171,6 +185,16 @@ namespace Calculator_Extended
         #endregion
 
         #region Memory Buttons
+        /// <summary>
+        /// Activates the disabled memory btns
+        /// </summary>
+        private void ActivateMemoryBtn()
+        {
+            MemoryClearBtn.IsEnabled = calculator.MemoryExist;
+            MemoryRestoreBtn.IsEnabled = calculator.MemoryExist;
+            MemoryDisplayBtn.IsEnabled = calculator.MemoryExist;
+            
+        }
 
         /// <summary>
         /// Memory Button Related Functions Buttons
@@ -179,7 +203,31 @@ namespace Calculator_Extended
         /// <param name="e"></param>
         private void MemoryBtn_Click(object sender, RoutedEventArgs e)
         {
+            string theTag = ((Button)sender).Tag.ToString();
 
+            switch (theTag)
+            {
+                case "M+":
+                    //check for existing memory item
+                    calculator.MemoryAdd();
+                    break;
+                case "M-":
+                    //check for existing memory item
+                    calculator.MemorySubstract();
+                    break;
+                case "MS":
+                    //Store into Memory
+                    calculator.MemoryStore();
+                    break;
+                case "MR":
+                    //Recall Memory
+                    calculator.MemoryRestore();
+                    break;
+                case "MC":
+                    calculator.MemoryClear();
+                    break;
+            }
+            OutputSetter();
         }
         #endregion
 
@@ -196,6 +244,8 @@ namespace Calculator_Extended
             mainOutBlock.Text = model.MainOutputBlock;
             //call the update ui method
             UpdateTextBlocksUI();
+            //check the memory active
+            ActivateMemoryBtn();
         }
         /// <summary>
         /// A Method that uodates the fontsize of the mainOutput block

@@ -3,6 +3,10 @@ using System.Windows.Input;
 
 namespace Calculator_Extended
 {
+    /// <summary>
+    /// a class to relay commands from the User Inteface
+    /// N.B this class is not in use
+    /// </summary>
     public class RelayCommand : ICommand
     {
         #region Private Members

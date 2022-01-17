@@ -216,12 +216,12 @@
                 </Grid.ColumnDefinitions>
                 
                 
-                <Button x:Name="MemoryClearBtn" Click="MemoryBtn_Click" Style="{StaticResource MemoryButtonsStyle}" IsEnabled="False" Grid.Column="0" Content="MC"/>
-                <Button x:Name="MemoryRestoreBtn" Click="MemoryBtn_Click" Style="{StaticResource MemoryButtonsStyle}" IsEnabled="False" Grid.Column="1" Content="MR"/>
-                <Button x:Name="MemoryPlusBtn" Click="MemoryBtn_Click" Style="{StaticResource MemoryButtonsStyle}" Grid.Column="2" Content="M+"/>
-                <Button x:Name="MemoryMinusBtn" Click="MemoryBtn_Click" Style="{StaticResource MemoryButtonsStyle}" Grid.Column="3" Content="M-"/>
-                <Button x:Name="MemoryStoreBtn" Click="MemoryBtn_Click" Style="{StaticResource MemoryButtonsStyle}" Grid.Column="4" Content="MS"/>
-                <Button x:Name="MemoryDisplayBtn" Click="MemoryBtn_Click" Style="{StaticResource MemoryButtonsStyle}" IsEnabled="False" Grid.Column="5" Content="M^"/>
+                <Button x:Name="MemoryClearBtn" Tag="MC" Click="MemoryBtn_Click" Style="{StaticResource MemoryButtonsStyle}" IsEnabled="False" Grid.Column="0" Content="MC"/>
+                <Button x:Name="MemoryRestoreBtn" Tag="MR" Click="MemoryBtn_Click" Style="{StaticResource MemoryButtonsStyle}" IsEnabled="False" Grid.Column="1" Content="MR"/>
+                <Button x:Name="MemoryPlusBtn" Tag="M+" Click="MemoryBtn_Click" Style="{StaticResource MemoryButtonsStyle}" Grid.Column="2" Content="M+"/>
+                <Button x:Name="MemoryMinusBtn" Tag="M-" Click="MemoryBtn_Click" Style="{StaticResource MemoryButtonsStyle}" Grid.Column="3" Content="M-"/>
+                <Button x:Name="MemoryStoreBtn" Tag="MS" Click="MemoryBtn_Click" Style="{StaticResource MemoryButtonsStyle}" Grid.Column="4" Content="MS"/>
+                <Button x:Name="MemoryDisplayBtn" Tag="M^" Click="MemoryBtn_Click" Style="{StaticResource MemoryButtonsStyle}" IsEnabled="False" Grid.Column="5" Content="M^"/>
 
                 
                 

@@ -2,9 +2,13 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Calculator_Extended
 {
+    /// <summary>
+    /// This is the main calculator class that house the entire calculator functions
+    /// </summary>
     public class CalculatorStructure
     {
 
@@ -19,22 +23,34 @@ namespace Calculator_Extended
         public bool HasDecimal { get; set; }
         //stores if the input is Negative or not
         public bool IsNegative { get; set; }
+        //stores if a memory item exists or not
+        public bool MemoryExist { get; set; }
+
         #endregion
 
         #region Private Fields
+        //the main input block that holds the current input
         private string mainBlockInput { get; set; }
+        // the current solution
         private string theSolution { get; set; }
 
+        //holds the list of the curent input see the Digit Settet Method to understand the use.
         private List<string> digitList = new List<string>();
-        //strore the list of entries and the the 
+        //strore the list of entries for display on top block 
         private List<string> displayList = new List<string>();
+        //hold a single item of the digit list with a default value of 0
         private string[] digArrray = new string[1] { "0" };
+        //the last action perform by the user
         private CalculatorUtilities.LastAction LastAction;
+        // the current function by the calculator
         private CalculatorUtilities.CalculatorFunction CurrentFunction;
+        // the current calculator state
         private CalculatorUtilities.CalculatorState CalculatorState;
+        //holds if the use can clear the main input
         private bool CanClear { get; set; }
-
+        //the memory item list that holds the items from the file
         private List<double> memoryItem = new List<double>();
+        //the path to the memory items file
         private string memoryFilePath;
         #endregion
 
@@ -52,10 +68,15 @@ namespace Calculator_Extended
             this.mainBlock = 0;
             //set the memory file Path
             memoryFilePath = Environment.CurrentDirectory + "\\MemoryFile.txt";
-
+            //Load the memory item from a file
+            LoadMemoryItemFromFile();
+            //checks for memory item
+            CheckMemoryItems();
+            //set the current calculator state
             CalculatorState = CalculatorUtilities.CalculatorState.Default; 
-            
+            //Adds a default value to the digit list
             digitList.Add("0");
+            //enable accepting inputs
             AcceptsInput = true;
             
         }
@@ -65,7 +86,163 @@ namespace Calculator_Extended
         /// <summary>
         /// Load Memory item from file  
         /// </summary>
-        
+        private void LoadMemoryItemFromFile()
+        {
+            //checks if the memory file exists if not create a new file
+            if (File.Exists(memoryFilePath))
+            {
+                //if the file exists get the current memomry item and add it to the list
+                string[] memoryLines = File.ReadLines(memoryFilePath).ToArray();
+                if (memoryLines.Length > 0)
+                {
+                    foreach (string lines in memoryLines)
+                    {
+                        try
+                        {
+                            memoryItem.Add(Convert.ToDouble(lines));
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+                    }
+                }
+            }
+            else
+            {
+                //if the file doesn't exist create a new empty file
+                try
+                {
+                    using (FileStream fs = File.Create(memoryFilePath))
+                    {
+
+                    }
+
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+        }
+        /// <summary>
+        /// Checks if there's a memory item availble
+        /// </summary>
+        /// <returns></returns>
+        private void CheckMemoryItems()
+        {
+            //sets if a memory items exists
+            if (memoryItem.Count > 0)
+                MemoryExist = true;
+            else
+                MemoryExist = false;
+        }
+        /// <summary>
+        /// Adds Item to the memory item list and save it to a file for recall
+        /// </summary>
+        /// <param name="theItem">the item</param>
+        private void SaveItemToMemory(double theItem)
+        {
+            //adds the item to the list
+            memoryItem.Add(theItem);
+            //write to file
+            string[] createText = { theItem.ToString() };
+            File.WriteAllLines(memoryFilePath, createText, Encoding.UTF8);
+            //update the memory items status
+            CheckMemoryItems();
+        }
+        /// <summary>
+        /// Updates the memory item on the list and the file
+        /// </summary>
+        /// <param name="theItem">the item</param>
+        private void UpdateMemoryItem(double theItem)
+        {
+            //Updates the current item inside the memoryitem lists and the file
+            memoryItem[0] = theItem;
+            string[] line = File.ReadAllLines(memoryFilePath);
+            line[0] = theItem.ToString();
+            File.WriteAllLines(memoryFilePath, line, Encoding.UTF8);
+            CheckMemoryItems();
+        }
+        /// <summary>
+        /// Add the current input to the current memory item
+        /// </summary>
+        public void MemoryAdd()
+        {
+            //check if there's a memory item already
+            if(memoryItem.Count > 0)
+            {
+                double result = memoryItem[0] + double.Parse(mainBlock.ToString());
+                UpdateMemoryItem(result);
+            }
+            else
+            {
+                double result = 0 + double.Parse(mainBlock.ToString());
+                SaveItemToMemory(result);
+            }
+        }
+        /// <summary>
+        /// Substract the current input from the current memory item 
+        /// </summary>
+        public void MemorySubstract()
+        {
+            //check if there's a memory item already
+            if (memoryItem.Count > 0)
+            {
+                double result = memoryItem[0] - double.Parse(mainBlock.ToString());
+                UpdateMemoryItem(result);
+            }
+            else
+            {
+                double result = 0 - double.Parse(mainBlock.ToString());
+                SaveItemToMemory(result);
+            }
+        }
+        /// <summary>
+        /// Stores the current input as a memory item
+        /// </summary>
+        public void MemoryStore()
+        {
+            double result = double.Parse(mainBlock.ToString());
+            if (memoryItem.Count > 0)
+            {
+                UpdateMemoryItem(result);
+            }
+            else
+            {   
+                SaveItemToMemory(result);
+            }
+        }
+        /// <summary>
+        /// Restores the current memory item as the current input
+        /// </summary>
+        public void MemoryRestore()
+        {
+            mainBlock = decimal.Parse(memoryItem[0].ToString());
+        }
+        /// <summary>
+        /// Clears the memory items from the list and the file
+        /// </summary>
+        public void MemoryClear()
+        {
+            memoryItem.Clear();
+            //clear the file by overwriting the file
+            try
+            {
+                using (FileStream fs = File.Create(memoryFilePath))
+                {
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                
+            }
+            CheckMemoryItems();
+        }
+
         #endregion
 
 
@@ -196,7 +373,11 @@ namespace Calculator_Extended
         #endregion
 
         #region Arithmetic Function
-        
+        /// <summary>
+        /// The main function to process the aritmetic operations on the calculator
+        /// </summary>
+        /// <param name="theFunc">the currennt operands</param>
+        /// <param name="theOperator">the current operator</param>
         public void MainFunctionOp(string theFunc, CalculatorUtilities.CalculatorFunction theOperator)
         {
             string theInput = null;
@@ -263,27 +444,38 @@ namespace Calculator_Extended
             }
             return theVal;
         }
+        /// <summary>
+        /// The Add operations 
+        /// </summary>
         public void AddFunction()
         {
 
             MainFunctionOp(" + ", CalculatorUtilities.CalculatorFunction.Plus);
         }
-
+        /// <summary>
+        /// the Substract operation
+        /// </summary>
         public void MinusFunction()
         {
             MainFunctionOp(" - ", CalculatorUtilities.CalculatorFunction.Minus);
         }
-
+        /// <summary>
+        /// the multiplication operation
+        /// </summary>
         public void MultiplyFunction()
         {
             MainFunctionOp(" × ", CalculatorUtilities.CalculatorFunction.Multiply);
         }
-
+        /// <summary>
+        /// The divide operation
+        /// </summary>
         public void DivideFunction()
         {
             MainFunctionOp(" ÷ ", CalculatorUtilities.CalculatorFunction.Divide);
         }
-
+        /// <summary>
+        /// The equal operation
+        /// </summary>
         public void EqualFunction()
         {
             string theInput = null;
@@ -313,6 +505,9 @@ namespace Calculator_Extended
         #endregion
 
         #region Top Function
+        /// <summary>
+        /// the square root function
+        /// </summary>
         public void SqrRt()
         {
             string theInput = "√(" + mainBlock.ToString() + ")";
@@ -322,7 +517,9 @@ namespace Calculator_Extended
             mainBlock = (decimal)(Math.Sqrt(double.Parse(mainBlock.ToString())));
             LastAction = CalculatorUtilities.LastAction.FunctionBtn;
         }
-
+        /// <summary>
+        /// The square function
+        /// </summary>
         public void Sqr()
         {
             string theInput = "sqr(" + mainBlock.ToString() + ")";
@@ -332,6 +529,9 @@ namespace Calculator_Extended
             mainBlock = (decimal)(Math.Pow(double.Parse(mainBlock.ToString()), 2));
             LastAction = CalculatorUtilities.LastAction.FunctionBtn;
         }
+        /// <summary>
+        /// the inverse function
+        /// </summary>
         public void Inverse()
         {
             string theInput = "1/(" + mainBlock.ToString() + ")";
