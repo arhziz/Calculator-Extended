@@ -48,17 +48,20 @@ namespace Calculator_Extended
         //Square Root Function Btn
         private void SqrRtBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            calculator.SqrRt();
+            OutputSetter();
         }
         //Square Function Btn 
         private void SqrBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            calculator.Sqr();
+            OutputSetter();
         }
         //Inverse Function Btn
         private void InverseBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            calculator.Inverse();
+            OutputSetter();
         }
 
         //Plus Minus Function Btn
@@ -137,7 +140,8 @@ namespace Calculator_Extended
 
         private void EqualBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            calculator.EqualFunction();
+            OutputSetter();
         }
 
         private void PlusBtn_Click(object sender, RoutedEventArgs e)
@@ -201,7 +205,7 @@ namespace Calculator_Extended
             //get the current text block content
             string currentText = mainOutBlock.Text;
             //check if the current text is less than 16
-            if(currentText.Length <= 16)
+            if(currentText.Length <= 15)
             {
                 //keep the font size the same
                 mainOutBlock.FontSize = 43;
@@ -210,7 +214,7 @@ namespace Calculator_Extended
             {
                 //reduce the font size
                 //substract 16 from the current size to get the proper size to remove and mulitpy the result by to 2 to move it by 2 steps
-                int sizeTo = (currentText.Length - 16) * 2;
+                int sizeTo = (currentText.Length - 15) * 2;
                 //get the new size from the current fontsize
                 double newCurrentFontSize = currentFontSize - sizeTo;
                 //set the mainBlock font size with the new size

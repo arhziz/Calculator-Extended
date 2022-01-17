@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Calculator_Extended
 {
@@ -30,6 +32,10 @@ namespace Calculator_Extended
         private CalculatorUtilities.LastAction LastAction;
         private CalculatorUtilities.CalculatorFunction CurrentFunction;
         private CalculatorUtilities.CalculatorState CalculatorState;
+        private bool CanClear { get; set; }
+
+        private List<double> memoryItem = new List<double>();
+        private string memoryFilePath;
         #endregion
 
         #region Static Fields
@@ -43,12 +49,23 @@ namespace Calculator_Extended
         public CalculatorStructure()
         {
             //main block starts with initial of zero;
-            CalculatorState = CalculatorUtilities.CalculatorState.Default; 
             this.mainBlock = 0;
+            //set the memory file Path
+            memoryFilePath = Environment.CurrentDirectory + "\\MemoryFile.txt";
+
+            CalculatorState = CalculatorUtilities.CalculatorState.Default; 
+            
             digitList.Add("0");
             AcceptsInput = true;
             
         }
+        #endregion
+
+        #region Memory 
+        /// <summary>
+        /// Load Memory item from file  
+        /// </summary>
+        
         #endregion
 
 
@@ -87,9 +104,9 @@ namespace Calculator_Extended
             }
             //update the main block
             mainBlock = decimal.Parse(mainBlockInput);
-
+            CanClear = true;
             //attempt to solve the current problem
-            
+
         }
         /// <summary>
         /// Add decimal to the current input
@@ -156,20 +173,24 @@ namespace Calculator_Extended
         /// </summary>
         public void ClearInput()
         {
-            if(digitList.Count > 1)
+            if (CanClear)
             {
-                digitList.RemoveAt(digitList.Count - 1);
-                digArrray[0] = String.Join("", digitList.ToArray());
-                mainBlockInput = digArrray[0];
-                AcceptsInput = true;
+                if (digitList.Count > 1)
+                {
+                    digitList.RemoveAt(digitList.Count - 1);
+                    digArrray[0] = String.Join("", digitList.ToArray());
+                    mainBlockInput = digArrray[0];
+                    AcceptsInput = true;
+                }
+                else
+                {
+                    digitList.Clear();
+                    digitList.Add("0");
+                    mainBlockInput = "0";
+                }
+                mainBlock = decimal.Parse(mainBlockInput);
             }
-            else
-            {
-                digitList.Clear();
-                digitList.Add("0");
-                mainBlockInput = "0";
-            }
-            mainBlock = decimal.Parse(mainBlockInput);
+            
 
         }
         #endregion
@@ -180,24 +201,33 @@ namespace Calculator_Extended
         {
             string theInput = null;
 
-            if (IsNegativeChecker())
-                theInput = "(" + mainBlock.ToString() + ")";
-            else
-                theInput = mainBlock.ToString();
-
             if (LastAction == CalculatorUtilities.LastAction.ArithmeticBtn)
                 displayList[displayList.Count - 1] = theFunc;
             else
             {
-                displayList.Add(theInput);
-                displayList.Add(theFunc);
+                if (LastAction == CalculatorUtilities.LastAction.FunctionBtn) {
+                    displayList.Add(theFunc);
+                }
+                else
+                {
+                    if (IsNegativeChecker())
+                        theInput = "(" + mainBlock.ToString() + ")";
+                    else
+                        theInput = mainBlock.ToString();
+
+                    displayList.Add(theInput);
+                    displayList.Add(theFunc);
+                }
+                
                 if (String.IsNullOrEmpty(theSolution))
                 {
                     theSolution = mainBlock.ToString();
+                    CanClear = false;
                 }
                 else
                 {
                     theSolution = Solve(theSolution, mainBlock.ToString(), CurrentFunction);
+                    CanClear = false;
                 }
             }
             topBlock = String.Join("", displayList.ToArray());
@@ -254,6 +284,63 @@ namespace Calculator_Extended
             MainFunctionOp(" ÷ ", CalculatorUtilities.CalculatorFunction.Divide);
         }
 
+        public void EqualFunction()
+        {
+            string theInput = null;
+            if (IsNegativeChecker())
+                theInput = "(" + mainBlock.ToString() + ")";
+            else
+                theInput = mainBlock.ToString();
+
+            displayList.Clear();
+            
+            if (String.IsNullOrEmpty(theSolution))
+            {
+                theSolution = mainBlock.ToString();
+                CanClear = false;
+            }
+            else
+            {
+                theSolution = Solve(theSolution, mainBlock.ToString(), CurrentFunction);
+                CanClear = false;
+            }
+            //set the top block to the combination of the display Array
+            topBlock = String.Join("", displayList.ToArray());
+            MainTextBlockReset(theSolution != null ? theSolution : "0");
+            theSolution = null;
+            LastAction = CalculatorUtilities.LastAction.EqualsBtn;
+        }
+        #endregion
+
+        #region Top Function
+        public void SqrRt()
+        {
+            string theInput = "√(" + mainBlock.ToString() + ")";
+            displayList.Add(theInput);
+            //set the top block to the combination of the display Array
+            topBlock = String.Join("", displayList.ToArray());
+            mainBlock = (decimal)(Math.Sqrt(double.Parse(mainBlock.ToString())));
+            LastAction = CalculatorUtilities.LastAction.FunctionBtn;
+        }
+
+        public void Sqr()
+        {
+            string theInput = "sqr(" + mainBlock.ToString() + ")";
+            displayList.Add(theInput);
+            //set the top block to the combination of the display Array
+            topBlock = String.Join("", displayList.ToArray());
+            mainBlock = (decimal)(Math.Pow(double.Parse(mainBlock.ToString()), 2));
+            LastAction = CalculatorUtilities.LastAction.FunctionBtn;
+        }
+        public void Inverse()
+        {
+            string theInput = "1/(" + mainBlock.ToString() + ")";
+            displayList.Add(theInput);
+            //set the top block to the combination of the display Array
+            topBlock = String.Join("", displayList.ToArray());
+            mainBlock = (decimal)(1/(double.Parse(mainBlock.ToString())));
+            LastAction = CalculatorUtilities.LastAction.FunctionBtn;
+        }
         #endregion
     }
 }
