@@ -78,7 +78,7 @@ namespace Calculator_Extended
         /// <param name="e"></param>
         private void CEBtn_Click(object sender, RoutedEventArgs e)
         {
-            calculator.MainTextBlockReset();
+            calculator.MainTextBlockReset("0");
             OutputSetter();
         }
 
@@ -142,22 +142,26 @@ namespace Calculator_Extended
 
         private void PlusBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            calculator.AddFunction();
+            OutputSetter();
         }
 
         private void MinusBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            calculator.MinusFunction();
+            OutputSetter();
         }
 
         private void MultiplyBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            calculator.MultiplyFunction();
+            OutputSetter();
         }
 
         private void DivideBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            calculator.DivideFunction();
+            OutputSetter();
         }
 
         #endregion

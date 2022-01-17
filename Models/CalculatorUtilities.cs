@@ -2,7 +2,7 @@
 {
     public class CalculatorUtilities
     {
-        public enum CaculatorFunction
+        public enum CalculatorFunction
         {
             Plus,
             Minus,
@@ -15,6 +15,15 @@
             Default,
             FunctionPressed,
             CanSolve
+        }
+
+        public enum LastAction
+        {
+            NumberBtn,
+            ArithmeticBtn,
+            FunctionBtn,
+            MemoryBtn,
+            EqualsBtn
         }
 
     }

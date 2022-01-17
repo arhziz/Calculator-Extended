@@ -11,21 +11,24 @@ namespace Calculator_Extended
         //top block string 
         public string topBlock { get; set; }
         public decimal mainBlock { get; set; }
-
-
         //stores if the calculator is currently accepting inputs
         public bool AcceptsInput { get; set; }
         //stores if the current input has a decimal or not
         public bool HasDecimal { get; set; }
-
         //stores if the input is Negative or not
         public bool IsNegative { get; set; }
         #endregion
 
         #region Private Fields
         private string mainBlockInput { get; set; }
+        private string theSolution { get; set; }
+
         private List<string> digitList = new List<string>();
+        //strore the list of entries and the the 
+        private List<string> displayList = new List<string>();
         private string[] digArrray = new string[1] { "0" };
+        private CalculatorUtilities.LastAction LastAction;
+        private CalculatorUtilities.CalculatorFunction CurrentFunction;
         private CalculatorUtilities.CalculatorState CalculatorState;
         #endregion
 
@@ -66,11 +69,10 @@ namespace Calculator_Extended
         public void DigitSetter(string thedig)
         {
 
+            
             //check for the input lenght and if the calculator is in default state
             if (CalculatorState == CalculatorUtilities.CalculatorState.Default)
             {
-
-
                 //create a list of the current input
                 //and check if the digitList length is less than 17
                 if (digitList.Count <= 15)
@@ -80,10 +82,14 @@ namespace Calculator_Extended
                 //join and parse the input to a single item container in this case an array
                 digArrray[0] = String.Join("", digitList.ToArray());
                 mainBlockInput = digArrray[0];
+
+                LastAction = CalculatorUtilities.LastAction.NumberBtn;
             }
             //update the main block
             mainBlock = decimal.Parse(mainBlockInput);
 
+            //attempt to solve the current problem
+            
         }
         /// <summary>
         /// Add decimal to the current input
@@ -138,10 +144,11 @@ namespace Calculator_Extended
         /// <summary>
         /// Resets the valur of the mainBlock to zero
         /// </summary>
-        public void MainTextBlockReset()
+        public void MainTextBlockReset(string theDisplay)
         {
-            mainBlock = 0;
+            mainBlock = decimal.Parse(theDisplay);
             digitList.Clear();
+            digitList.Add("0");
             AcceptsInput = true;
         }
         /// <summary>
@@ -168,10 +175,83 @@ namespace Calculator_Extended
         #endregion
 
         #region Arithmetic Function
+        
+        public void MainFunctionOp(string theFunc, CalculatorUtilities.CalculatorFunction theOperator)
+        {
+            string theInput = null;
+
+            if (IsNegativeChecker())
+                theInput = "(" + mainBlock.ToString() + ")";
+            else
+                theInput = mainBlock.ToString();
+
+            if (LastAction == CalculatorUtilities.LastAction.ArithmeticBtn)
+                displayList[displayList.Count - 1] = theFunc;
+            else
+            {
+                displayList.Add(theInput);
+                displayList.Add(theFunc);
+                if (String.IsNullOrEmpty(theSolution))
+                {
+                    theSolution = mainBlock.ToString();
+                }
+                else
+                {
+                    theSolution = Solve(theSolution, mainBlock.ToString(), CurrentFunction);
+                }
+            }
+            topBlock = String.Join("", displayList.ToArray());
             
+            MainTextBlockReset(theSolution != null ? theSolution : "0");
+            CurrentFunction = theOperator;
+            LastAction = CalculatorUtilities.LastAction.ArithmeticBtn;
+        }
+        /// <summary>
+        /// this is a method for solving the problem
+        /// </summary>
+        /// <param name="valueA">the first operand</param>
+        /// <param name="valueB">the second operand</param>
+        /// <param name="calculatorFunction">the enum class holding the functions</param>
+        /// <returns>a string as a solution</returns>
+        public string Solve(string valueA, string valueB, CalculatorUtilities.CalculatorFunction calculatorFunction)
+        {
+            string theVal = null;
+            switch (calculatorFunction)
+            {
+                case CalculatorUtilities.CalculatorFunction.Plus:
+                    theVal = (double.Parse(valueA) + double.Parse(valueB)).ToString();
+                    break;
+                case CalculatorUtilities.CalculatorFunction.Minus:
+                    theVal= (double.Parse(valueA) - double.Parse(valueB)).ToString();
+                    break;
+                case CalculatorUtilities.CalculatorFunction.Multiply:
+                    theVal = (double.Parse(valueA) * double.Parse(valueB)).ToString();
+                    break;
+                case CalculatorUtilities.CalculatorFunction.Divide:
+                    theVal = (double.Parse(valueA) / double.Parse(valueB)).ToString();
+                    break;
+            }
+            return theVal;
+        }
         public void AddFunction()
         {
-            topBlock = mainBlock.ToString() + " + ";
+
+            MainFunctionOp(" + ", CalculatorUtilities.CalculatorFunction.Plus);
+        }
+
+        public void MinusFunction()
+        {
+            MainFunctionOp(" - ", CalculatorUtilities.CalculatorFunction.Minus);
+        }
+
+        public void MultiplyFunction()
+        {
+            MainFunctionOp(" × ", CalculatorUtilities.CalculatorFunction.Multiply);
+        }
+
+        public void DivideFunction()
+        {
+            MainFunctionOp(" ÷ ", CalculatorUtilities.CalculatorFunction.Divide);
         }
 
         #endregion
